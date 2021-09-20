@@ -74,7 +74,7 @@ variable "database_password" {
 }
 
 variable "client_cidr_block" {
-  type        = list(string)
+  type        = string
   description = "Client CIDR block"
   sensitive   = true
 }
