@@ -4,7 +4,7 @@ operations_team = [
 ]
 
 products_team = [
-  "appdev"
+  "edriosv"
 ]
 
 leadership_team = [
