@@ -22,3 +22,4 @@ infrastructure/.terraform/providers/registry.terraform.io/terraform-aws-modules/
 infrastructure/.terraform/providers/registry.terraform.io/terraform-aws-modules/http/2.4.1/linux_amd64/LICENSE
 infrastructure/.terraform/providers/registry.terraform.io/terraform-aws-modules/http/2.4.1/linux_amd64/README.md
 infrastructure/.terraform/providers/registry.terraform.io/terraform-aws-modules/http/2.4.1/linux_amd64/terraform-provider-http_v2.4.1
+infrastructure/.terraform.lock.hcl
