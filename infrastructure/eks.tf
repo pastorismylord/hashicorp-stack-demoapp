@@ -3,7 +3,7 @@ module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   version         = "17.1.0"
   cluster_name    = var.name
-  cluster_version = "1.19"
+  cluster_version = "1.21"
   subnets         = module.vpc.private_subnets
 
   vpc_id           = module.vpc.vpc_id
@@ -20,7 +20,7 @@ module "eks" {
       max_capacity     = 3
       min_capacity     = 3
 
-      instance_types            = ["t2.small"]
+      instance_types            = ["t2.micro"]
       k8s_labels                = var.tags
       additional_tags           = var.additional_tags
       key_name                  = module.boundary.boundary_key_name
