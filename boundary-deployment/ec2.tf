@@ -109,7 +109,7 @@ resource "aws_instance" "controller" {
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = var.private_ssh_key
+    private_key = base64decode(var.private_ssh_key)
     host        = self.public_ip
   }
 
