@@ -1,5 +1,12 @@
 terraform {
   required_version = "~> 1.0"
+  backend "remote" {
+		organization = "EdV" # org name from step 2.
+		workspaces {
+		          	name = "vault-deployment" # name for your app's state.
+		          }
+				  }
+
   required_providers {
     kubernetes = {
       source  = "hashicorp/kubernetes"
