@@ -1,6 +1,11 @@
 terraform {
   required_version = "~> 1.0"
-
+  backend "remote" {
+		organization = "EdV" # org name from step 2.
+		workspaces {
+		          	name = "infrastructure" # name for your app's state.
+		          }
+				  }
   required_providers {
     aws = {
       source  = "hashicorp/aws"
