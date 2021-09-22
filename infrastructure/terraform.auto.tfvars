@@ -1,4 +1,4 @@
-region                     = "us-east-1"
+region                     = "us-east-2"
 hcp_region                 = "us-east-1"
 name                       = "zero"
 hcp_consul_public_endpoint = true
