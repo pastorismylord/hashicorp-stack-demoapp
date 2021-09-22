@@ -29,14 +29,14 @@ ssh-operations:
 		-password $(shell cd boundary-configuration && terraform output -raw boundary_operations_password) \
 		-auth-method-id=$(shell cd boundary-configuration && terraform output -raw boundary_auth_method_id)
 	boundary connect ssh -username=ec2-user -target-id \
-		$(shell cd boundary-configuration && terraform output -raw boundary_target_eks) -- -i boundary-deployment/bin/id_rsa
+		$(shell cd boundary-configuration && terraform output -raw boundary_target_eks) -- -i ~/.ssh/id_rsa
 
 ssh-products:
 	@boundary authenticate password -login-name=appdev \
 		-password $(shell cd boundary-configuration && terraform output -raw boundary_products_password) \
 		-auth-method-id=$(shell cd boundary-configuration && terraform output -raw boundary_auth_method_id)
 	boundary connect ssh -username=ec2-user -target-id \
-		$(shell cd boundary-configuration && terraform output -raw boundary_target_eks) -- -i boundary-deployment/bin/id_rsa
+		$(shell cd boundary-configuration && terraform output -raw boundary_target_eks) -- -i ~/.ssh/id_rsa
 
 postgres-operations:
 	@boundary authenticate password -login-name=ops \
