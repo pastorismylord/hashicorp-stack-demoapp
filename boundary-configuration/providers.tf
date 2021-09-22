@@ -1,9 +1,9 @@
 terraform {
   required_version = "~> 1.0"
   backend "remote" {
-		organization = "EdV" # org name from step 2.
+		organization = "EdV"
 		workspaces {
-		          	name = "boundary-configuration" # name for your app's state.
+		          	name = "boundary-configuration"
 		          }
 				  }
   required_providers {
