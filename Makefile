@@ -11,8 +11,19 @@ kubeconfig:
 	aws eks --region $(shell cd infrastructure && terraform output -raw region) update-kubeconfig \
 		--name $(shell cd infrastructure && terraform output -raw eks_cluster_name)
 
+db-token:
+	boundary authenticate password --keyring-type=none -login-name=edriosv \
+		-password $(shell cd boundary-configuration && terraform output -raw boundary_products_password) \
+		-auth-method-id=$(shell cd boundary-configuration && terraform output -raw boundary_auth_method_id)
+		
+db-config:
+	boundary connect postgres -username=postgres --keyring-type=none \
+	-token  \
+	-target-id \
+		$(shell cd boundary-configuration && terraform output -raw boundary_target_postgres) -- -d products -f database-service/products.sql
+		
 configure-db:
-	boundary authenticate password -login-name=appdev \
+	boundary authenticate password -login-name=edriosv \
 		-password $(shell cd boundary-configuration && terraform output -raw boundary_products_password) \
 		-auth-method-id=$(shell cd boundary-configuration && terraform output -raw boundary_auth_method_id)
 	boundary connect postgres -username=postgres -target-id \
@@ -24,12 +35,25 @@ configure-consul: kubeconfig
     	-policy-name database-write-policy -merge-policies -merge-roles -merge-service-identities
 	kubectl apply -f consul-deployment/terminating_gateway.yaml
 
+ops-token:
+	@boundary authenticate password -login-name=ops \
+		-password $(shell cd boundary-configuration && terraform output -raw boundary_operations_password) \
+		-auth-method-id=$(shell cd boundary-configuration && terraform output -raw boundary_auth_method_id) \
+		--keyring-type=none
+
+ops-ssh:
+	@boundary connect ssh -username=ec2-user -target-id \
+		$(shell cd boundary-configuration && terraform output -raw boundary_target_eks)\
+		--keyring-type=none -token at_kpMMAJ6pmL_s1N9ieWaKkUvFy3Tdki59HuYZxYRd57joiX4xRdAthWSjionrUtv3dCE5bWUWgaJWm9L3ut35G15cHcybwVxmNWi4tLkg3zbPrN8JBdcG4QbmwMY1SFPDucsHVV -- -i ~/.ssh/id_rsa
+
 ssh-operations:
 	@boundary authenticate password -login-name=ops \
 		-password $(shell cd boundary-configuration && terraform output -raw boundary_operations_password) \
-		-auth-method-id=$(shell cd boundary-configuration && terraform output -raw boundary_auth_method_id)
+		-auth-method-id=$(shell cd boundary-configuration && terraform output -raw boundary_auth_method_id) \
+		--keyring-type=pass
 	boundary connect ssh -username=ec2-user -target-id \
-		$(shell cd boundary-configuration && terraform output -raw boundary_target_eks) -- -i ~/.ssh/id_rsa
+		$(shell cd boundary-configuration && terraform output -raw boundary_target_eks)\
+		--keyring-type=pass -- -i ~/.ssh/id_rsa
 
 ssh-products:
 	@boundary authenticate password -login-name=appdev \
